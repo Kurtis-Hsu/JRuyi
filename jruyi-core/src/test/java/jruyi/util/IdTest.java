@@ -2,21 +2,38 @@ package jruyi.util;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * <h2></h2>
- *
- * @Date 2024-02-26 12:44
- */
 public class IdTest
 {
     @Test
     void test1()
     {
-        var id = IdBuilder.simpleLongId();
-        System.out.println(id.build());
-        System.out.println(id.build());
-        System.out.println(id.build());
-        System.out.println(id.build());
-        System.out.println(id.build());
+        var id = IdGenerator.simpleIncrementId();
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+    }
+
+    @Test
+    void test2()
+    {
+        var id = IdGenerator.randomUUID();
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+    }
+
+    @Test
+    void test3()
+    {
+        var id = IdGenerator.randomUUIDString();
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
+        System.out.println(id.newId());
     }
 }
