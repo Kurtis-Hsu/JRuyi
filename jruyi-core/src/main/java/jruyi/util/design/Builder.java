@@ -1,5 +1,7 @@
 package jruyi.util.design;
 
+import jruyi.core.exception.BuildingException;
+
 /**
  * <h2>构建者</h2>
  *
@@ -8,8 +10,8 @@ package jruyi.util.design;
 public interface Builder<T>
 {
     /**
-     * @return 构建实例
-     * @throws Exception 构建实例时发生的异常
+     * @return 被构建类的新实例
+     * @throws BuildingException 构建实例时发生的异常
      */
-    T build() throws Exception;
+    T build() throws BuildingException;
 }

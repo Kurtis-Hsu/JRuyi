@@ -12,7 +12,7 @@ public class IdTest
     @Test
     void test1()
     {
-        var id = IdBuilder.simpleId();
+        var id = IdBuilder.simpleLongId();
         System.out.println(id.build());
         System.out.println(id.build());
         System.out.println(id.build());
