@@ -7,8 +7,7 @@ module jruyi.core
 {
     requires transitive jakarta.annotation;
 
-    exports jruyi.core;
     exports jruyi.util;
-    exports jruyi.core.exception;
-    exports jruyi.util.design;
+    exports jruyi.util.reflect;
+    exports jruyi.core.mutable;
 }

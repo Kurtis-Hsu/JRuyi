@@ -1,14 +1,13 @@
 package jruyi.util;
 
 import jakarta.annotation.Nullable;
-import jruyi.core.exception.UnsupportedTypeException;
 
 import java.util.function.Supplier;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static jruyi.util.Util.defaultIfNull;
 import static jruyi.util.Util.isEmpty;
+import static jruyi.util.Util.safeGet;
 
 /**
  * <h2>断言工具</h2>
@@ -34,7 +33,7 @@ public abstract class Assert
     {
         if (arg == null)
             throw new NullPointerException(
-                    addPrefix(STR."the parameter [\{nonnull(paramName)}] must not be null")
+                    failedMsg(STR."the parameter [\{nonnull(paramName)}] must not be null").get().toString()
             );
         return arg;
     }
@@ -45,10 +44,7 @@ public abstract class Assert
      * @return 被检测参数
      * @throws NullPointerException 参数为 null
      */
-    public static <O> O nonnull(@Nullable O arg)
-    {
-        return nonnull(arg, () -> addPrefix("the argument must not be null"));
-    }
+    public static <O> O nonnull(@Nullable O arg) { return nonnull(arg, failedMsg("the argument must not be null")); }
 
     /**
      * @param arg 被检测参数
@@ -70,9 +66,9 @@ public abstract class Assert
      * @return 被检测参数
      * @throws NullPointerException 参数为 null
      */
-    public static <O> O nonnull(@Nullable O arg, Supplier<String> msg)
+    public static <O> O nonnull(@Nullable O arg, MessageSupplier msg)
     {
-        if (arg == null) throw new NullPointerException(msg.get());
+        if (arg == null) throw new NullPointerException(safeGet(msg.get(), "Assertion failed").toString());
         return arg;
     }
 
@@ -82,15 +78,12 @@ public abstract class Assert
      * 断言指定参数不为空
      *
      * @param arg 指定参数
-     * @throws UnsupportedTypeException 指定参数的类型不支持
+     * @throws IllegalArgumentException 指定的参数为空
      * @see Util#isEmpty(Object)
      */
     public static void notEmpty(@Nullable Object arg)
     {
-        asserts(
-                !isEmpty(arg),
-                () -> addPrefix(STR."the argument\{arg == null ? "" : STR." [\{arg}]"} must not be empty")
-        );
+        asserts(!isEmpty(arg), failedMsg("the argument must not be empty"));
     }
 
     /**
@@ -98,20 +91,20 @@ public abstract class Assert
      *
      * @param arg 指定参数
      * @param msg 异常警报信息
-     * @throws UnsupportedTypeException 指定参数的类型不支持
+     * @throws IllegalArgumentException 指定的参数为空
      * @see Util#isEmpty(Object)
      */
-    public static void notEmpty(@Nullable Object arg, String msg) { asserts(!isEmpty(arg), msg); }
+    public static void notEmpty(@Nullable Object arg, @Nullable String msg) { asserts(!isEmpty(arg), msg); }
 
     /**
      * 断言指定参数不为空
      *
      * @param arg 指定参数
      * @param msg 异常警报信息
-     * @throws UnsupportedTypeException 指定参数的类型不支持
+     * @throws IllegalArgumentException 指定的参数为空
      * @see Util#isEmpty(Object)
      */
-    public static void notEmpty(@Nullable Object arg, Supplier<String> msg) { asserts(!isEmpty(arg), msg); }
+    public static void notEmpty(@Nullable Object arg, MessageSupplier msg) { asserts(!isEmpty(arg), msg); }
 
     // PART ----- BOOLEAN -----
 
@@ -129,7 +122,7 @@ public abstract class Assert
      * @throws IllegalArgumentException 表达式不为真
      * @see Boolean#equals(Object)
      */
-    public static void isTrue(@Nullable Boolean exp, @Nullable Supplier<String> msg) { asserts(TRUE.equals(exp), msg); }
+    public static void isTrue(@Nullable Boolean exp, MessageSupplier msg) { asserts(TRUE.equals(exp), msg); }
 
     /**
      * @param exp 表达式
@@ -145,7 +138,7 @@ public abstract class Assert
      * @throws IllegalArgumentException 表达式不为假
      * @see BooleanUtil#isFalse(Boolean)
      */
-    public static void isFalse(@Nullable Boolean exp, Supplier<String> msg) { asserts(FALSE.equals(exp), msg); }
+    public static void isFalse(@Nullable Boolean exp, MessageSupplier msg) { asserts(FALSE.equals(exp), msg); }
 
     // PART ----- TEXT ------
 
@@ -156,7 +149,7 @@ public abstract class Assert
      */
     public static void notBlank(@Nullable String str)
     {
-        asserts(StringUtil.notBlank(str), () -> addPrefix("the text is invalid"));
+        asserts(StringUtil.notBlank(str), failedMsg("the text is invalid"));
     }
 
     /**
@@ -173,10 +166,7 @@ public abstract class Assert
      * @throws IllegalArgumentException 文本无效
      * @see StringUtil#notBlank(CharSequence)
      */
-    public static void notBlank(@Nullable String str, @Nullable Supplier<String> msg)
-    {
-        asserts(StringUtil.notBlank(str), msg);
-    }
+    public static void notBlank(@Nullable String str, MessageSupplier msg) { asserts(StringUtil.notBlank(str), msg); }
 
     // PART ----- STATE ------
 
@@ -189,7 +179,7 @@ public abstract class Assert
      */
     public static void state(boolean exp, @Nullable String msg)
     {
-        if (!exp) throw new IllegalStateException(defaultIfNull(msg, EMPTY_MSG));
+        if (!exp) throw new IllegalStateException(safeGet(msg, "Assertion failed"));
     }
 
     /**
@@ -199,9 +189,10 @@ public abstract class Assert
      * @param msg 异常警报信息
      * @throws IllegalArgumentException 表达式不为真
      */
-    public static void state(boolean exp, Supplier<String> msg)
+    public static void state(boolean exp, MessageSupplier msg)
     {
-        if (!exp) throw new IllegalStateException(msg.get());
+        var message = safeGet(msg.get(), "Assertion failed");
+        if (!exp) throw new IllegalStateException(message.toString());
     }
 
     // PART ----- CLASS -----
@@ -216,10 +207,10 @@ public abstract class Assert
      */
     public static void isInstance(@Nullable Object obj, Class<?> clazz)
     {
-        nonnull(clazz, addPrefix("the super class to check must not be null"));
+        nonnull(clazz, failedMsg("the super class to check must not be null"));
         asserts(
                 clazz.isInstance(obj),
-                addPrefix(STR."the object must not be null and must be instance of class [\{clazz}]")
+                () -> failedMsg(STR."the object must not be null and must be instance of class [\{clazz}]").get()
         );
     }
 
@@ -234,7 +225,7 @@ public abstract class Assert
      */
     public static void isInstance(@Nullable Object obj, Class<?> clazz, @Nullable String msg)
     {
-        nonnull(clazz, addPrefix("the super class to check must not be null"));
+        nonnull(clazz, failedMsg("the super class to check must not be null"));
         asserts(clazz.isInstance(obj), msg);
     }
 
@@ -247,7 +238,7 @@ public abstract class Assert
      * @throws IllegalArgumentException 指定对象不为指定类的实例
      * @throws NullPointerException     传入的类参数为 null
      */
-    public static void isInstance(@Nullable Object obj, Class<?> clazz, Supplier<String> msg)
+    public static void isInstance(@Nullable Object obj, Class<?> clazz, MessageSupplier msg)
     {
         paramNonnull(clazz, "clazz");
         asserts(clazz.isInstance(obj), msg);
@@ -267,7 +258,7 @@ public abstract class Assert
         paramNonnull(superClass, "superClass");
         asserts(
                 superClass.isAssignableFrom(subClass),
-                addPrefix(STR."class [\{subClass}] must be a subclass of class [\{superClass}]")
+                () -> failedMsg(STR."class [\{subClass}] must be a subclass of class [\{superClass}]").get()
         );
     }
 
@@ -296,7 +287,7 @@ public abstract class Assert
      * @throws IllegalArgumentException 指定类不为指定超类的子类
      * @throws NullPointerException     传入的任意参数为 null
      */
-    public static void isSuper(Class<?> subClass, Class<?> superClass, Supplier<String> msg)
+    public static void isSuper(Class<?> subClass, Class<?> superClass, MessageSupplier msg)
     {
         paramNonnull(subClass, "subClass");
         paramNonnull(superClass, "superClass");
@@ -312,9 +303,10 @@ public abstract class Assert
      * @param msg 异常警报信息
      * @throws IllegalArgumentException 布尔表达式结果为 false
      */
-    protected static void asserts(boolean exp, @Nullable String msg)
+    public static void asserts(boolean exp, @Nullable String msg)
     {
-        if (!exp) throw new IllegalArgumentException(msg);
+        var message = safeGet(msg, "Assertion failed");
+        if (!exp) throw new IllegalArgumentException(message);
     }
 
     /**
@@ -324,14 +316,39 @@ public abstract class Assert
      * @param msg 异常警报信息
      * @throws IllegalArgumentException 布尔表达式结果为 false
      */
-    protected static void asserts(boolean exp, Supplier<String> msg)
+    public static void asserts(boolean exp, MessageSupplier msg)
     {
-        if (!exp) throw new IllegalArgumentException(msg.get());
+        var message = safeGet(msg.get(), "Assertion failed");
+        if (!exp) throw new IllegalArgumentException(message.toString());
+    }
+
+    /**
+     * 断言方法
+     *
+     * @param exp 布尔表达式
+     * @param e   异常
+     * @throws E 布尔表达式结果为 false
+     */
+    public static <E extends RuntimeException> void asserts(boolean exp, ExceptionSupplier<E> e)
+    {
+        if (!exp) throw e.get();
     }
 
     /**
      * @param msg 断言失败信息
      * @return 加上了 "[Assertion failed] - " 前缀的断言失败信息
      */
-    public static String addPrefix(String msg) { return STR."[Assertion failed] - \{msg}"; }
+    protected static MessageSupplier failedMsg(String msg) { return () -> STR."[Assertion failed] - \{msg}"; }
+
+    /**
+     * 消息提供者
+     */
+    public interface MessageSupplier extends Supplier<CharSequence> { }
+
+    /**
+     * 异常提供者
+     *
+     * @param <E> 异常类型
+     */
+    public interface ExceptionSupplier<E extends RuntimeException> extends Supplier<E> { }
 }

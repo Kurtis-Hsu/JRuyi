@@ -22,6 +22,7 @@
 
   <modules>
     <module>jruyi-core</module>
+    <module>jruyi-kotlin</module>
   </modules>
 
   <properties>
@@ -39,11 +40,6 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>jakarta.json.bind</groupId>
-      <artifactId>jakarta.json.bind-api</artifactId>
-      <version>3.0.0</version>
-    </dependency>
   </dependencies>
 
   <dependencyManagement>
@@ -51,6 +47,11 @@
       <dependency>
         <groupId>${jruyi.groupId}</groupId>
         <artifactId>jruyi-core</artifactId>
+        <version>${jruyi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${jruyi.groupId}</groupId>
+        <artifactId>jruyi-kotlin</artifactId>
         <version>${jruyi.version}</version>
       </dependency>
     </dependencies>

@@ -1,7 +1,6 @@
 package jruyi.util;
 
 import jakarta.annotation.Nullable;
-import jruyi.core.exception.UnsupportedTypeException;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -32,9 +31,10 @@ public abstract class Util
      *     </ul>
      * </p>
      *
+     * 若参数为不支持的类型且不为 null，默认不为空，返回 false
+     *
      * @param arg 被检测参数
      * @return 参数是否为空，参数为 null 时返回 true
-     * @throws UnsupportedTypeException 参数类型不支持检测
      */
     public static boolean isEmpty(@Nullable Object arg)
     {
@@ -46,17 +46,7 @@ public abstract class Util
             case Map<?, ?> m -> m.isEmpty();
             case Iterator<?> itr -> !itr.hasNext();
             case Iterable<?> itr -> !itr.iterator().hasNext();
-            default ->
-            {
-                try
-                {
-                    yield Array.getLength(arg) == 0;
-                }
-                catch (IllegalArgumentException _)
-                {
-                    throw new UnsupportedTypeException(arg.getClass());
-                }
-            }
+            default -> arg.getClass().isArray() && Array.getLength(arg) == 0;
         };
     }
 
@@ -67,7 +57,7 @@ public abstract class Util
      * @return 参数1为 null 时返回参数2，否则返回参数1
      */
     @Nullable
-    public static <T> T defaultIfNull(@Nullable T checked, @Nullable T defaultValue)
+    public static <T> T safeGet(@Nullable T checked, @Nullable T defaultValue)
     {
         return checked != null ? checked : defaultValue;
     }
@@ -79,7 +69,7 @@ public abstract class Util
      * @return 参数1为 null 时返回参数2，否则返回参数1
      */
     @Nullable
-    public static <T> T defaultIfNull(@Nullable T checked, Supplier<T> defaultValue)
+    public static <T> T safeGet(@Nullable T checked, Supplier<T> defaultValue)
     {
         return checked != null ? checked : defaultValue.get();
     }
@@ -126,7 +116,7 @@ public abstract class Util
      *
      * @param total  数值总量（例如：文本长度，数组元素数，集合元素数）
      * @param offset 偏移量
-     * @return 修正后的位置值
+     * @return 修正后的偏移量值
      */
     public static int offsetFix(int total, int offset)
     {

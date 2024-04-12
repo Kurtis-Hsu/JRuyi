@@ -2,179 +2,20 @@ package jruyi.util;
 
 import jakarta.annotation.Nullable;
 
-import java.util.Objects;
 import java.util.Properties;
 import java.util.function.Supplier;
+
+import static jruyi.util.Util.safeGet;
 
 /**
  * <h2>系统属性</h2>
  *
+ * <p>该对象获取值时需要与系统交互，有性能需求时需考虑缓存</p>
+ *
  * @Date 2024-01-15 09:34
  */
-@SuppressWarnings("unused")
 public abstract class SystemProperties
 {
-    /**
-     * 操作系统名称
-     */
-    public static final String OS_NAME = "os.name";
-    /**
-     * 操作系统版本
-     */
-    public static final String OS_VERSION = "os.version";
-    /**
-     * 操作系统默认字符编码
-     */
-    public static final String OS_ENCODING = "sun.jnu.encoding";
-    /**
-     * 运行当前 Java 程序的命令
-     */
-    public static final String OS_COMMAND = "sun.java.command";
-    /**
-     * 操作系统架构名称
-     */
-    public static final String OS_ARCH = "os.arch";
-    /**
-     * CPU 指令集
-     */
-    public static final String CPU_ISA_LIST = "sun.cpu.isalist";
-    /**
-     * CPU 数据位数，例如 32位 或 64位
-     */
-    public static final String CPU_DATA_MODEL = "sun.arch.data.model";
-    /**
-     * 系统用户当前工作目录
-     */
-    public static final String USER_DIR = "user.dir";
-    /**
-     * 系统用户名称
-     */
-    public static final String USER_NAME = "user.name";
-    /**
-     * 系统用户目录
-     */
-    public static final String USER_HOME = "user.home";
-    /**
-     * 系统用户变量
-     */
-    public static final String USER_VARIANT = "user.variant";
-    /**
-     * 系统用户国家代号，例如 CN
-     */
-    public static final String USER_COUNTRY = "user.country";
-    /**
-     * 系统用户语言代号，例如 zh
-     */
-    public static final String USER_LANGUAGE = "user.language";
-    /**
-     * 系统用户脚本
-     */
-    public static final String USER_SCRIPT = "user.script";
-    /**
-     * JVM 名称
-     */
-    public static final String JVM_NAME = "java.vm.name";
-    /**
-     * JVM 规范名称
-     */
-    public static final String JVM_SPEC_NAME = "java.vm.specification.name";
-    /**
-     * JVM 发行商
-     */
-    public static final String JVM_VENDOR = "java.vm.vendor";
-    /**
-     * JVM 发行商网址
-     */
-    public static final String JVM_VENDOR_URL = "java.vendor.url";
-    /**
-     * JVM 版本，例如 21.0.1+12-LTS-29
-     */
-    public static final String JVM_VERSION = "java.vm.version";
-    /**
-     * JVM 规范版本
-     */
-    public static final String JVM_SPEC_VERSION = "java.vm.specification.version";
-    /**
-     * JVM 规范发行商
-     */
-    public static final String JVM_SPEC_VENDOR = "java.vm.specification.vendor";
-    /**
-     * Java 运行名称
-     */
-    public static final String JAVA_RUN_NAME = "java.runtime.name";
-    /**
-     * Java 目录
-     */
-    public static final String JAVA_HOME = "java.home";
-    /**
-     * Java 版本
-     */
-    public static final String JAVA_VERSION = "java.version";
-    /**
-     * Java 规范版本
-     */
-    public static final String JAVA_SPEC_VERSION = "java.specification.version";
-    /**
-     * Java class 文件版本
-     */
-    public static final String JAVA_CLASS_VERSION = "java.class.version";
-    /**
-     * 当前 Java 版本发布日期
-     */
-    public static final String JAVA_VERSION_DATE = "java.version.date";
-    /**
-     * Java 规范名称
-     */
-    public static final String JAVA_SPEC_NAME = "java.specification.name";
-    /**
-     * Java 规范发行商
-     */
-    public static final String JAVA_SPEC_VENDOR = "java.specification.vendor";
-    /**
-     * Java 类路径
-     */
-    public static final String JAVA_CLASS_PATH = "java.class.path";
-    /**
-     * Java 发行版名称
-     */
-    public static final String JAVA_LAUNCHER = "sun.java.launcher";
-    /**
-     * Java bin 路径
-     */
-    public static final String JAVA_BIN_PATH = "sun.boot.library.path";
-    /**
-     * Java 可以搜索的所有路径，包括 bin 和 操作系统 Path，以 ';' 分隔
-     */
-    public static final String JAVA_LIB_PATH = "java.library.path";
-    /**
-     * Java 临时 IO 目录（例如：win 系统的 "C:\Users\{user.dir}\AppData\Local\Temp\"）
-     */
-    public static final String JAVA_TMP_DIR = "java.io.tmpdir";
-    /**
-     * Java bug 报告网址
-     */
-    public static final String JAVA_BUG_URL = "java.vendor.url.bug";
-    /**
-     * 当前系统的文件路径分隔符（例如：win 系统的 "\"）
-     */
-    public static final String FILE_SEPARATOR = "file.separator";
-    /**
-     * 当前系统的行分隔符（例如：win 系统的 "\r\n"）
-     */
-    public static final String LINE_SEPARATOR = "line.separator";
-    /**
-     * 当前系统的路径分隔符（例如：win 系统的 ";"）
-     */
-    public static final String PATH_SEPARATOR = "path.separator";
-    /**
-     * {@link System#out} 使用的字符编码
-     */
-    public static final String STDOUT_ENCODING = "stdout.encoding";
-    /**
-     * {@link System#err} 使用的字符编码
-     */
-    public static final String STDERR_ENCODING = "stderr.encoding";
-
     /**
      * @param props 属性列表
      * @see System#setProperties(Properties)
@@ -199,10 +40,7 @@ public abstract class SystemProperties
      * @param key   key 值
      * @param value value 值
      */
-    public static void set(Object key, Object value)
-    {
-        System.setProperty(key.toString(), value.toString());
-    }
+    public static void set(Object key, Object value) { System.setProperty(key.toString(), value.toString()); }
 
     /**
      * 获取不到属性时默认返回 {@code null}
@@ -224,9 +62,7 @@ public abstract class SystemProperties
     @Nullable
     public static String get(String key, @Nullable String defaultValue)
     {
-        Assert.notBlank(key, "the key to get system property is invalid");
-        var property = System.getProperty(key);
-        return StringUtil.isEmpty(property) ? defaultValue : property;
+        return safeGet(System.getProperty(key), defaultValue);
     }
 
     /**
@@ -264,39 +100,230 @@ public abstract class SystemProperties
         return property == null ? replace.get() : Boolean.parseBoolean(property);
     }
 
+    /**
+     * 操作系统名称
+     */
+    public static final String OS_NAME = "os.name";
+
     public static String osName() { return get(OS_NAME); }
+
+    /**
+     * 操作系统版本
+     */
+    public static final String OS_VERSION = "os.version";
 
     public static String osVersion() { return get(OS_VERSION); }
 
-    public static String osCommand() { return get(OS_COMMAND); }
+    /**
+     * 操作系统默认字符编码
+     */
+    public static final String OS_ENCODING = "sun.jnu.encoding";
 
     public static String osEncoding() { return get(OS_ENCODING); }
 
+    /**
+     * 运行当前 Java 程序的命令
+     */
+    public static final String OS_COMMAND = "sun.java.command";
+
+    public static String osCommand() { return get(OS_COMMAND); }
+
+    /**
+     * 操作系统架构名称
+     */
+    public static final String OS_ARCH = "os.arch";
+
     public static String osArch() { return get(OS_ARCH); }
 
-    public static String cpuDataModel() { return get(CPU_DATA_MODEL); }
+    /**
+     * CPU 指令集
+     */
+    public static final String CPU_ISA_LIST = "sun.cpu.isalist";
 
     public static String cpuIsaList() { return get(CPU_ISA_LIST); }
 
-    public static String userCountry() { return get(USER_COUNTRY); }
+    /**
+     * CPU 数据位数，例如 32位 或 64位
+     */
+    public static final String CPU_DATA_MODEL = "sun.arch.data.model";
+
+    public static String cpuDataModel() { return get(CPU_DATA_MODEL); }
+
+    /**
+     * 系统用户当前工作目录
+     */
+    public static final String USER_DIR = "user.dir";
 
     public static String userDir() { return get(USER_DIR); }
 
-    public static String userHome() { return get(USER_HOME); }
+    /**
+     * 系统用户名称
+     */
+    public static final String USER_NAME = "user.name";
 
     public static String userName() { return get(USER_NAME); }
 
-    public static String userLanguage() { return get(USER_LANGUAGE); }
+    /**
+     * 系统用户目录
+     */
+    public static final String USER_HOME = "user.home";
 
-    public static String userScript() { return get(USER_SCRIPT); }
+    public static String userHome() { return get(USER_HOME); }
+
+    /**
+     * 系统用户变量
+     */
+    public static final String USER_VARIANT = "user.variant";
 
     public static String userVariant() { return get(USER_VARIANT); }
 
+    /**
+     * 系统用户国家代号，例如 CN
+     */
+    public static final String USER_COUNTRY = "user.country";
+
+    public static String userCountry() { return get(USER_COUNTRY); }
+
+    /**
+     * 系统用户语言代号，例如 zh
+     */
+    public static final String USER_LANGUAGE = "user.language";
+
+    public static String userLanguage() { return get(USER_LANGUAGE); }
+
+    /**
+     * 系统用户脚本
+     */
+    public static final String USER_SCRIPT = "user.script";
+
+    public static String userScript() { return get(USER_SCRIPT); }
+
+    /**
+     * JVM 名称
+     */
+    public static final String JVM_NAME = "java.vm.name";
+
     public static String jvmName() { return get(JVM_NAME); }
 
+    /**
+     * JVM 规范名称
+     */
+    public static final String JVM_SPEC_NAME = "java.vm.specification.name";
     public static String jvmSpecName() { return get(JVM_SPEC_NAME); }
-
+    /**
+     * JVM 发行商
+     */
+    public static final String JVM_VENDOR = "java.vm.vendor";
     public static String jvmVendor() { return get(JVM_VENDOR); }
+    /**
+     * JVM 发行商网址
+     */
+    public static final String JVM_VENDOR_URL = "java.vendor.url";
+    /**
+     * JVM 版本，例如 21.0.1+12-LTS-29
+     */
+    public static final String JVM_VERSION = "java.vm.version";
+    /**
+     * JVM 规范版本
+     */
+    public static final String JVM_SPEC_VERSION = "java.vm.specification.version";
+    /**
+     * JVM 规范发行商
+     */
+    public static final String JVM_SPEC_VENDOR = "java.vm.specification.vendor";
+    /**
+     * Java 运行名称
+     */
+    public static final String JAVA_RUN_NAME = "java.runtime.name";
+    /**
+     * Java 目录
+     */
+    public static final String JAVA_HOME = "java.home";
+
+    /**
+     * Java 版本
+     */
+    public static final String JAVA_VERSION = "java.version";
+
+    /**
+     * Java 规范版本
+     */
+    public static final String JAVA_SPEC_VERSION = "java.specification.version";
+
+    /**
+     * Java class 文件版本
+     */
+    public static final String JAVA_CLASS_VERSION = "java.class.version";
+
+    /**
+     * 当前 Java 版本发布日期
+     */
+    public static final String JAVA_VERSION_DATE = "java.version.date";
+
+    /**
+     * Java 规范名称
+     */
+    public static final String JAVA_SPEC_NAME = "java.specification.name";
+
+    /**
+     * Java 规范发行商
+     */
+    public static final String JAVA_SPEC_VENDOR = "java.specification.vendor";
+
+    /**
+     * Java 类路径
+     */
+    public static final String JAVA_CLASS_PATH = "java.class.path";
+
+    /**
+     * Java 发行版名称
+     */
+    public static final String JAVA_LAUNCHER = "sun.java.launcher";
+
+    /**
+     * Java bin 路径
+     */
+    public static final String JAVA_BIN_PATH = "sun.boot.library.path";
+
+    /**
+     * Java 可以搜索的所有路径，包括 bin 和 操作系统 Path，以 ';' 分隔
+     */
+    public static final String JAVA_LIB_PATH = "java.library.path";
+
+    /**
+     * Java 临时 IO 目录（例如：win 系统的 "C:\Users\{user.dir}\AppData\Local\Temp\"）
+     */
+    public static final String JAVA_TMP_DIR = "java.io.tmpdir";
+
+    /**
+     * Java bug 报告网址
+     */
+    public static final String JAVA_BUG_URL = "java.vendor.url.bug";
+
+    /**
+     * 当前系统的文件路径分隔符（例如：win 系统的 "\"）
+     */
+    public static final String FILE_SEPARATOR = "file.separator";
+
+    /**
+     * 当前系统的行分隔符（例如：win 系统的 "\r\n"）
+     */
+    public static final String LINE_SEPARATOR = "line.separator";
+
+    /**
+     * 当前系统的路径分隔符（例如：win 系统的 ";"）
+     */
+    public static final String PATH_SEPARATOR = "path.separator";
+
+    /**
+     * {@link System#out} 使用的字符编码
+     */
+    public static final String STDOUT_ENCODING = "stdout.encoding";
+
+    /**
+     * {@link System#err} 使用的字符编码
+     */
+    public static final String STDERR_ENCODING = "stderr.encoding";
 
     public static String jvmVendorUrl() { return get(JVM_VENDOR_URL); }
 
@@ -328,10 +355,7 @@ public abstract class SystemProperties
 
     public static String javaClassPath() { return get(JAVA_CLASS_PATH); }
 
-    public static String javaLibPath()
-    {
-        return get(JAVA_LIB_PATH);
-    }
+    public static String javaLibPath() { return get(JAVA_LIB_PATH); }
 
     public static String javaTmpDir() { return get(JAVA_TMP_DIR); }
 
@@ -346,4 +370,6 @@ public abstract class SystemProperties
     public static String stdoutEncoding() { return get(STDOUT_ENCODING); }
 
     public static String stderrEncoding() { return get(STDERR_ENCODING); }
+
+    // TODO
 }

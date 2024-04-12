@@ -20,6 +20,9 @@ public abstract class BooleanUtil
     public static final int DIGIT_FALSE = 0;
     public static final int DIGIT_TRUE = 1;
 
+    private static final String[] TRUE_STRING_ARR = { "true", "t", "y", "yes", "on", "对", "對", "√", "ok" };
+    private static final String[] FALSE_STRING_ARR = { "false", "f", "n", "no", "off", "错", "錯", "×" };
+
     private static final double DOUBLE_FALSE = DIGIT_FALSE;
 
     /**
@@ -101,6 +104,8 @@ public abstract class BooleanUtil
         return bool ? FALSE : TRUE;
     }
 
+    // PART ----- CHECK -----
+
     /**
      * @param bool 布尔值
      * @return 布尔值是否为 true, 为 null 时返回 false
@@ -114,6 +119,18 @@ public abstract class BooleanUtil
     public static boolean isTrue(BooleanSupplier bool) { return TRUE.equals(bool.getAsBoolean()); }
 
     /**
+     * @param str 被检测字符串
+     * @return 字符串是否表示 true
+     * @see #TRUE_STRING_ARR
+     */
+    public static boolean isTrue(@Nullable String str)
+    {
+        if (str == null) return false;
+        for (var s : TRUE_STRING_ARR) if (s.equalsIgnoreCase(str)) return true;
+        return false;
+    }
+
+    /**
      * @param bool 布尔值
      * @return 布尔值是否为 false, 为 null 时返回 false
      */
@@ -124,6 +141,20 @@ public abstract class BooleanUtil
      * @return 布尔值是否为 false, 为 null 时返回 false
      */
     public static boolean isFalse(BooleanSupplier bool) { return FALSE.equals(bool.getAsBoolean()); }
+
+    /**
+     * @param str 被检测字符串
+     * @return 字符串是否表示 false
+     * @see #FALSE_STRING_ARR
+     */
+    public static boolean isFalse(@Nullable String str)
+    {
+        if (str == null) return false;
+        for (var s : FALSE_STRING_ARR) if (s.equalsIgnoreCase(str)) return true;
+        return false;
+    }
+
+    // PART ----- CONVERT -----
 
     /**
      * @param digit 整数
@@ -174,4 +205,77 @@ public abstract class BooleanUtil
         var b = bool != null ? bool : defaultValue;
         return b ? DIGIT_TRUE : DIGIT_FALSE;
     }
+
+    /**
+     * 将对象实例转换为布尔值（默认值为 false）
+     *
+     * @param arg 参数
+     * @return 布尔值
+     * @see #ofObject(Object, boolean)
+     */
+    public static boolean ofObject(@Nullable Object arg) { return ofObject(arg, false); }
+
+    /**
+     * 将对象实例转换为布尔值
+     *
+     * <p>
+     * 支持以下情况：
+     *     <ul>
+     *         <li>null -> 默认值</li>
+     *         <li>Boolean -> 其值本身</li>
+     *         <li>Number -> double 值不为 0</li>
+     *     </ul>
+     * </p>
+     *
+     * <p>类型为不支持的类型时，以不为 null 值表示为 ture（<b>直接返回 true 而传入的默认值</b>）</p>
+     *
+     * @param arg          参数
+     * @param defaultValue 默认值（仅适用参数为 null 的情况）
+     * @return 布尔值
+     */
+    public static boolean ofObject(@Nullable Object arg, boolean defaultValue)
+    {
+        return switch (arg)
+        {
+            case null -> defaultValue;
+            case Boolean b -> b;
+            case Number n -> n.doubleValue() != DOUBLE_FALSE;
+            default -> true;
+        };
+    }
+
+    /**
+     * 将布尔值转换为字符串
+     *
+     * @param bool 布尔值
+     * @return "true" / "false"
+     */
+    public static String toString(boolean bool) { return bool ? "true" : "false"; }
+
+    /**
+     * 将布尔值转换为字符串
+     *
+     * @param bool 布尔值
+     * @return "yes" / "no"
+     */
+    public static String toStringYesNo(boolean bool) { return bool ? "yes" : "no"; }
+
+    /**
+     * 将布尔值转换为字符串
+     *
+     * @param bool 布尔值
+     * @return "on" / "off"
+     */
+    public static String toStringOnOff(boolean bool) { return bool ? "on" : "off"; }
+
+    // PART ----- OTHER -----
+
+    /**
+     * 比较两个布尔值，相等时返回 0，若 x == false && y == true 返回 -1，若 x == true && y == false 返回 1
+     *
+     * @param x 布尔值 x
+     * @param y 布尔值 y
+     * @return 比较结果
+     */
+    public static int compare(boolean x, boolean y) { return x == y ? 0 : x ? 1 : -1; }
 }

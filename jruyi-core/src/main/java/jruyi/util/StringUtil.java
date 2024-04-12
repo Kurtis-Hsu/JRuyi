@@ -2,6 +2,8 @@ package jruyi.util;
 
 import jakarta.annotation.Nullable;
 
+import java.util.StringJoiner;
+
 /**
  * <h2>字符串工具</h2>
  *
@@ -59,5 +61,57 @@ public abstract class StringUtil
             if (!Character.isWhitespace(csq.charAt(i)))
                 return true;
         return false;
+    }
+
+    // PART ----- JOIN -----
+
+    /**
+     * 连接数组元素为字符串
+     *
+     * @param delimiter 分隔符
+     * @param args      参数数组
+     * @return 字符串
+     */
+    public static String join(CharSequence delimiter, Object... args) { return join(delimiter, "", "", args); }
+
+    /**
+     * 连接迭代器元素为字符串
+     *
+     * @param delimiter 分隔符
+     * @param itr       可迭代参数
+     * @return 字符串
+     */
+    public static String join(CharSequence delimiter, Iterable<?> itr) { return join(delimiter, "", "", itr); }
+
+    /**
+     * 连接数组元素为字符串
+     *
+     * @param delimiter 分隔符
+     * @param prefix    前缀
+     * @param suffix    后缀
+     * @param args      参数数组
+     * @return 字符串
+     */
+    public static String join(CharSequence delimiter, CharSequence prefix, CharSequence suffix, Object... args)
+    {
+        var joiner = new StringJoiner(delimiter, prefix, suffix);
+        for (var arg : args) joiner.add(String.valueOf(arg));
+        return joiner.toString();
+    }
+
+    /**
+     * 连接迭代器元素为字符串
+     *
+     * @param delimiter 分隔符
+     * @param prefix    前缀
+     * @param suffix    后缀
+     * @param itr       可迭代参数
+     * @return 字符串
+     */
+    public static String join(CharSequence delimiter, CharSequence prefix, CharSequence suffix, Iterable<?> itr)
+    {
+        var joiner = new StringJoiner(delimiter, prefix, suffix);
+        for (var arg : itr) joiner.add(String.valueOf(arg));
+        return joiner.toString();
     }
 }

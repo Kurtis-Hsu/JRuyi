@@ -1,7 +1,7 @@
-package jruyi.util;
+package jruyi.util.reflect;
 
 import jakarta.annotation.Nullable;
-import jruyi.core.exception.ReflectionException;
+import jruyi.util.Assert;
 
 /**
  * <h2>类工具</h2>
@@ -17,7 +17,7 @@ public abstract class ClassUtil
     // PART ----- CHECK -----
 
     /**
-     * <p>该方法仅用于检测, 不会加载类</p>
+     * <p>该方法仅用于检测，不会加载类</p>
      *
      * <p>使用默认类加载器 {@link #getDefaultClassLoader()}</p>
      *
@@ -31,7 +31,7 @@ public abstract class ClassUtil
      * <p>该方法仅用于检测, 不会加载类</p>
      *
      * @param name   类名称
-     * @param loader 类加载器, 若该属性为 null, 使用默认类加载器 {@link #getDefaultClassLoader()}
+     * @param loader 类加载器，若该属性为 null，使用默认类加载器 {@link #getDefaultClassLoader()}
      * @return 指定类是否存在
      * @see Class#forName(String, boolean, ClassLoader)
      */
@@ -45,7 +45,6 @@ public abstract class ClassUtil
      * @param name   类名
      * @param loader 类加载器，加载规则参考：{@link #getDefaultClassLoader()}
      * @return 类
-     * @throws ReflectionException      找不到类
      * @throws IllegalArgumentException 类名为无效字符串
      * @see Class#forName(String, boolean, ClassLoader)
      */
@@ -57,7 +56,6 @@ public abstract class ClassUtil
      * @param initialize 是否初始化类
      * @param loader     类加载器，加载规则参考：{@link #getDefaultClassLoader()}
      * @return 类，找不到名称对应的类时返回 null
-     * @throws ReflectionException      找不到类
      * @throws IllegalArgumentException 类名为无效字符串
      * @see Class#forName(String, boolean, ClassLoader)
      */
@@ -87,13 +85,16 @@ public abstract class ClassUtil
     /**
      * @param name 类型名称
      * @return 原始类型
-     * @see PrimitiveType#of(String)
      */
     @Nullable
-    public static Class<?> getPrimitive(@Nullable String name)
+    public static Class<?> getPrimitive(String name)
     {
-        var type = PrimitiveType.of(name);
-        return type == null ? null : type.primitive;
+        Assert.paramNonnull(name, "name");
+        if (name.length() >= 8) return null;
+        for (var t : PrimitiveType.values())
+            if (t.primitiveName().equals(name))
+                return t.primitive();
+        return null;
     }
 
     // PART ----- CLASS_LOADER -----
@@ -120,71 +121,5 @@ public abstract class ClassUtil
             if (loader == null) loader = ClassLoader.getSystemClassLoader();
         }
         return loader;
-    }
-
-    /**
-     * <h2>原始类型枚举</h2>
-     */
-    enum PrimitiveType
-    {
-        BYTE(byte.class, Byte.class), SHORT(short.class, Short.class), INTEGER(int.class, Integer.class),
-        LONG(long.class, Long.class), FLOAT(float.class, Float.class), DOUBLE(double.class, Double.class),
-        CHAR(char.class, Character.class), BOOLEAN(boolean.class, Boolean.class), VOID(void.class, Void.class),
-        ;
-
-        /**
-         * 类型名称与包装类的类名
-         */
-        final String name, wrapperName;
-        /**
-         * 原始类对象与包装类对象
-         */
-        final Class<?> primitive, wrapper;
-
-        PrimitiveType(Class<?> primitive, Class<?> wrapper)
-        {
-            this.name = primitive.getName();
-            this.primitive = primitive;
-            this.wrapper = wrapper;
-            this.wrapperName = wrapper.getName();
-        }
-
-        /**
-         * <p>
-         * 通过名称获取，
-         * 可使用原始类型名或包装类型名
-         * </p>
-         *
-         * @param name 类型名称
-         * @return 原始类型枚举
-         */
-        @Nullable
-        static PrimitiveType of(@Nullable String name)
-        {
-            if (StringUtil.isBlank(name)) return null;
-            for (var v : values())
-                if (v.name.equals(name) || v.wrapperName.equals(name))
-                    return v;
-            return null;
-        }
-
-        /**
-         * <p>
-         * 通过类型获取,
-         * 可使用原始类型或包装类型
-         * </p>
-         *
-         * @param type 类型名称
-         * @return 原始类型枚举
-         */
-        @Nullable
-        static PrimitiveType of(@Nullable Class<?> type)
-        {
-            if (type == null) return null;
-            for (var v : values())
-                if (v.primitive == type || v.wrapper == type)
-                    return v;
-            return null;
-        }
     }
 }

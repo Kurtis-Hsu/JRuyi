@@ -35,8 +35,5 @@ public interface IdGenerator<ID extends Serializable>
     /**
      * @return 使用 {@link UUID#randomUUID()} 生成随机 uuid
      */
-    static IdGenerator<String> randomUUIDString()
-    {
-        return () -> UUID.randomUUID().toString().replaceAll("-", "");
-    }
+    static IdGenerator<String> randomUUIDString() { return () -> UUID.randomUUID().toString().replaceAll("-", ""); }
 }
