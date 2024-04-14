@@ -5,9 +5,9 @@ package jruyi.kotlin
 /**
  * 该对象是否为 null
  */
-val <T> T?.isnull get() = this == null
+val <T> T?.isNull get() = this == null
 
 /**
  * 该对象是否非 null
  */
-val <T> T?.notnull get() = this != null
+val <T> T?.notNull get() = this != null
