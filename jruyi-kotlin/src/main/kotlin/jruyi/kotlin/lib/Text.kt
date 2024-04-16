@@ -1,36 +1,23 @@
-package jruyi.kotlin
+package jruyi.kotlin.lib
 
-// Date: 2024-04-12 15:53
-
-/**
- * 该对象是否为 null
- */
-val Any?.isNull get() = this == null
-
-/**
- * 该对象是否非 null
- */
-val Any?.notNull get() = this != null
+// 文本相关
+// Date: 2024-04-16 20:06
 
 /**
  * 判断该字符序列是否为 null 或长度是否为 0
  */
-val CharSequence?.isNil get() = this?.length == 0
-
-/**
- * 判断字符序列是否包含有效文本
- */
-val CharSequence.hasText: Boolean
-    get()
-    {
-        forEach { if (!it.isWhitespace()) return true }
-        return false
-    }
+val CharSequence?.nil get() = this?.length == 0
 
 /**
  * 判断字符序列是否为 null 或为无效文本
  */
-val CharSequence?.isBlank get() = this?.hasText == true
+val CharSequence?.blank: Boolean
+    get()
+    {
+        if (this == null) return true
+        forEach { if (!it.isWhitespace()) return true }
+        return false
+    }
 
 private typealias DefaultSystemProperty = () -> String
 
