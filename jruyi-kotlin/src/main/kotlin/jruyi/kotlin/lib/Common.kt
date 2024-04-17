@@ -23,3 +23,8 @@ val Any?.notNull get() = this != null
  * 该对象是否无效（这里与[isNull]相同），可通过重载该属性附加额外效果
  */
 val Any?.nil get() = isNull
+
+fun main()
+{
+    SYSTEM_PROPS.forEach { println("${it.key} --- ${it.value}") }
+}
