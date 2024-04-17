@@ -1,5 +1,11 @@
 package jruyi.kotlin.lib
 
+import java.util.*
+
+var SYSTEM_PROPS: Properties
+    get() = System.getProperties()
+    set(value) = System.setProperties(value)
+
 // 通用
 // Date: 2024-04-16 20:04
 

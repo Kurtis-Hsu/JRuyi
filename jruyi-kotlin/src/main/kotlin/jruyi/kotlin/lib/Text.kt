@@ -6,7 +6,7 @@ package jruyi.kotlin.lib
 /**
  * 判断该字符序列是否为 null 或长度是否为 0
  */
-val CharSequence?.nil get() = this?.length == 0
+val CharSequence?.nil get() = this.isNullOrEmpty()
 
 /**
  * 判断字符序列是否为 null 或为无效文本
@@ -15,8 +15,8 @@ val CharSequence?.blank: Boolean
     get()
     {
         if (this == null) return true
-        forEach { if (!it.isWhitespace()) return true }
-        return false
+        forEach { if (!it.isWhitespace()) return false }
+        return true
     }
 
 private typealias DefaultSystemProperty = () -> String

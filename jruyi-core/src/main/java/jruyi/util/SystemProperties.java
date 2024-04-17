@@ -209,66 +209,99 @@ public abstract class SystemProperties
      * JVM 规范名称
      */
     public static final String JVM_SPEC_NAME = "java.vm.specification.name";
+
     public static String jvmSpecName() { return get(JVM_SPEC_NAME); }
+
     /**
      * JVM 发行商
      */
     public static final String JVM_VENDOR = "java.vm.vendor";
+
     public static String jvmVendor() { return get(JVM_VENDOR); }
+
     /**
      * JVM 发行商网址
      */
     public static final String JVM_VENDOR_URL = "java.vendor.url";
+
+    public static String jvmVendorUrl() { return get(JVM_VENDOR_URL); }
+
     /**
      * JVM 版本，例如 21.0.1+12-LTS-29
      */
     public static final String JVM_VERSION = "java.vm.version";
+
+    public static String jvmVersion() { return get(JVM_VERSION); }
+
     /**
      * JVM 规范版本
      */
     public static final String JVM_SPEC_VERSION = "java.vm.specification.version";
+
+    public static String jvmSpecVersion() { return get(JVM_SPEC_VERSION); }
+
     /**
      * JVM 规范发行商
      */
     public static final String JVM_SPEC_VENDOR = "java.vm.specification.vendor";
+
+    public static String jvmSpecVendor() { return get(JVM_SPEC_VENDOR); }
+
     /**
      * Java 运行名称
      */
     public static final String JAVA_RUN_NAME = "java.runtime.name";
+
+    public static String javaRunName() { return get(JAVA_RUN_NAME); }
+
     /**
      * Java 目录
      */
     public static final String JAVA_HOME = "java.home";
+
+    public static String javaHome() { return get(JAVA_HOME); }
 
     /**
      * Java 版本
      */
     public static final String JAVA_VERSION = "java.version";
 
+    public static String javaVersion() { return get(JAVA_VERSION); }
+
     /**
      * Java 规范版本
      */
     public static final String JAVA_SPEC_VERSION = "java.specification.version";
 
-    /**
-     * Java class 文件版本
-     */
-    public static final String JAVA_CLASS_VERSION = "java.class.version";
+    public static String javaSpecVersion() { return get(JAVA_SPEC_VERSION); }
 
     /**
      * 当前 Java 版本发布日期
      */
     public static final String JAVA_VERSION_DATE = "java.version.date";
 
+    public static String javaVersionDate() { return get(JAVA_VERSION_DATE); }
+
     /**
      * Java 规范名称
      */
     public static final String JAVA_SPEC_NAME = "java.specification.name";
 
+    public static String javaSpecName() { return get(JAVA_SPEC_NAME); }
+
     /**
      * Java 规范发行商
      */
     public static final String JAVA_SPEC_VENDOR = "java.specification.vendor";
+
+    public static String javaSpecVendor() { return get(JAVA_SPEC_VENDOR); }
+
+    /**
+     * Java class 文件版本
+     */
+    public static final String JAVA_CLASS_VERSION = "java.class.version";
+
+    public static String javaClassVersion() { return get(JAVA_CLASS_VERSION); }
 
     /**
      * Java 类路径
@@ -280,10 +313,14 @@ public abstract class SystemProperties
      */
     public static final String JAVA_LAUNCHER = "sun.java.launcher";
 
+    public static String javaLauncher() { return get(JAVA_LAUNCHER); }
+
     /**
      * Java bin 路径
      */
     public static final String JAVA_BIN_PATH = "sun.boot.library.path";
+
+    public static String javaBinPath() { return get(JAVA_BIN_PATH); }
 
     /**
      * Java 可以搜索的所有路径，包括 bin 和 操作系统 Path，以 ';' 分隔
@@ -324,34 +361,6 @@ public abstract class SystemProperties
      * {@link System#err} 使用的字符编码
      */
     public static final String STDERR_ENCODING = "stderr.encoding";
-
-    public static String jvmVendorUrl() { return get(JVM_VENDOR_URL); }
-
-    public static String jvmSpecVendor() { return get(JVM_SPEC_VENDOR); }
-
-    public static String jvmVersion() { return get(JVM_VERSION); }
-
-    public static String jvmSpecVersion() { return get(JVM_SPEC_VERSION); }
-
-    public static String javaRunName() { return get(JAVA_RUN_NAME); }
-
-    public static String javaSpecName() { return get(JAVA_SPEC_NAME); }
-
-    public static String javaVersion() { return get(JAVA_VERSION); }
-
-    public static String javaSpecVersion() { return get(JAVA_SPEC_VERSION); }
-
-    public static String javaVersionDate() { return get(JAVA_VERSION_DATE); }
-
-    public static String javaClassVersion() { return get(JAVA_CLASS_VERSION); }
-
-    public static String javaSpecVendor() { return get(JAVA_SPEC_VENDOR); }
-
-    public static String javaLauncher() { return get(JAVA_LAUNCHER); }
-
-    public static String javaHome() { return get(JAVA_HOME); }
-
-    public static String javaBinPath() { return get(JAVA_BIN_PATH); }
 
     public static String javaClassPath() { return get(JAVA_CLASS_PATH); }
 
