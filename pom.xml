@@ -43,6 +43,7 @@
   </dependencies>
 
   <dependencyManagement>
+    <!-- JRuyi -->
     <dependencies>
       <dependency>
         <groupId>${jruyi.groupId}</groupId>
