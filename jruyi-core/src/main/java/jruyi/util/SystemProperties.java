@@ -338,6 +338,20 @@ public abstract class SystemProperties
     public static final String JAVA_BUG_URL = "java.vendor.url.bug";
 
     /**
+     * 程序主模块
+     */
+    public static final String MODULE_MAIN = "jdk.module.main";
+
+    public static String moduleMain() { return get(MODULE_MAIN); }
+
+    /**
+     * 程序主模块主类
+     */
+    public static final String MODULE_MAIN_CLASS = "jdk.module.main.class";
+
+    public static String moduleMainClass() { return get(MODULE_MAIN_CLASS); }
+
+    /**
      * 当前系统的文件路径分隔符（例如：win 系统的 "\"）
      */
     public static final String FILE_SEPARATOR = "file.separator";
@@ -357,10 +371,21 @@ public abstract class SystemProperties
      */
     public static final String STDOUT_ENCODING = "stdout.encoding";
 
+    public static String stdoutEncoding() { return get(STDOUT_ENCODING); }
+
     /**
      * {@link System#err} 使用的字符编码
      */
     public static final String STDERR_ENCODING = "stderr.encoding";
+
+    public static String stderrEncoding() { return get(STDERR_ENCODING); }
+
+    /**
+     * 系统默认编码
+     */
+    public static final String NATIVE_ENCODING = "native.encoding";
+
+    public static String nativeEncoding() { return get(NATIVE_ENCODING); }
 
     public static String javaClassPath() { return get(JAVA_CLASS_PATH); }
 
@@ -375,10 +400,6 @@ public abstract class SystemProperties
     public static String lineSeparator() { return get(LINE_SEPARATOR); }
 
     public static String pathSeparator() { return get(PATH_SEPARATOR); }
-
-    public static String stdoutEncoding() { return get(STDOUT_ENCODING); }
-
-    public static String stderrEncoding() { return get(STDERR_ENCODING); }
 
     // TODO
 }
