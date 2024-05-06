@@ -7,16 +7,19 @@ import jakarta.annotation.Nullable;
  *
  * @Date 2024-04-02 20:27
  */
-public class MutableInteger extends Number implements Mutable<Integer>
+public class MutableInteger extends Number implements Mutable<Integer>, Comparable<MutableInteger>
 {
-    private int value; // TODO 可变数据类
+    private int value;
 
-    public static MutableInteger of(int value)
-    {
-        var instance = new MutableInteger();
-        instance.value = value;
-        return instance;
-    }
+    private MutableInteger(int value) { this.value = value; }
+
+    public static MutableInteger of(int value) { return new MutableInteger(value); }
+
+    public static MutableInteger of(Integer value) { return new MutableInteger(value); }
+
+    @Override public Integer get() { return value; }
+
+    @Override public void set(Integer value) { this.value = value; }
 
     @Override
     public boolean equals(@Nullable Object o)
@@ -31,11 +34,7 @@ public class MutableInteger extends Number implements Mutable<Integer>
 
     @Override public int hashCode() { return value; }
 
-    @Override public String toString() { return String.valueOf(value); }
-
-    @Override public Integer get() { return value; }
-
-    @Override public void set(Integer value) { this.value = value; }
+    @Override public String toString() { return Integer.toString(value); }
 
     @Override public int intValue() { return value; }
 
@@ -44,4 +43,6 @@ public class MutableInteger extends Number implements Mutable<Integer>
     @Override public float floatValue() { return value; }
 
     @Override public double doubleValue() { return value; }
+
+    @Override public int compareTo(MutableInteger o) { return Integer.compare(value, o.value); }
 }

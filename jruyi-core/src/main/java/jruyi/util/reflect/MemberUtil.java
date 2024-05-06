@@ -10,13 +10,13 @@ import java.lang.reflect.Modifier;
  */
 public abstract class MemberUtil
 {
-    private static final int ACCESS_TEST = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED;
+    private static final int access_test = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED;
 
     /**
      * @param modifiers 被检测修饰符
      * @return 指定的修饰符是否表示包私有
      */
-    public static boolean isPackagePrivate(int modifiers) { return (modifiers & ACCESS_TEST) == 0; }
+    public static boolean isPackagePrivate(int modifiers) { return (modifiers & access_test) == 0; }
 
     /**
      * @param m 成员对象

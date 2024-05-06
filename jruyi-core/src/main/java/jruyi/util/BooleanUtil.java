@@ -20,10 +20,7 @@ public abstract class BooleanUtil
     public static final int DIGIT_FALSE = 0;
     public static final int DIGIT_TRUE = 1;
 
-    private static final String[] TRUE_STRING_ARR = { "true", "t", "y", "yes", "on", "对", "對", "√", "ok" };
-    private static final String[] FALSE_STRING_ARR = { "false", "f", "n", "no", "off", "错", "錯", "×" };
-
-    private static final double DOUBLE_FALSE = DIGIT_FALSE;
+    private static final double double_false = DIGIT_FALSE;
 
     /**
      * <h2>与</h2>
@@ -114,45 +111,9 @@ public abstract class BooleanUtil
 
     /**
      * @param bool 布尔值
-     * @return 布尔值是否为 true, 为 null 时返回 false
-     */
-    public static boolean isTrue(BooleanSupplier bool) { return TRUE.equals(bool.getAsBoolean()); }
-
-    /**
-     * @param str 被检测字符串
-     * @return 字符串是否表示 true
-     * @see #TRUE_STRING_ARR
-     */
-    public static boolean isTrue(@Nullable String str)
-    {
-        if (str == null) return false;
-        for (var s : TRUE_STRING_ARR) if (s.equalsIgnoreCase(str)) return true;
-        return false;
-    }
-
-    /**
-     * @param bool 布尔值
      * @return 布尔值是否为 false, 为 null 时返回 false
      */
     public static boolean isFalse(@Nullable Boolean bool) { return FALSE.equals(bool); }
-
-    /**
-     * @param bool 布尔值
-     * @return 布尔值是否为 false, 为 null 时返回 false
-     */
-    public static boolean isFalse(BooleanSupplier bool) { return FALSE.equals(bool.getAsBoolean()); }
-
-    /**
-     * @param str 被检测字符串
-     * @return 字符串是否表示 false
-     * @see #FALSE_STRING_ARR
-     */
-    public static boolean isFalse(@Nullable String str)
-    {
-        if (str == null) return false;
-        for (var s : FALSE_STRING_ARR) if (s.equalsIgnoreCase(str)) return true;
-        return false;
-    }
 
     // PART ----- CONVERT -----
 
@@ -161,7 +122,7 @@ public abstract class BooleanUtil
      * @return 整数值是否表示 true
      * @see #DIGIT_FALSE
      */
-    public static boolean ofDigit(int digit) { return digit != DOUBLE_FALSE; }
+    public static boolean ofDigit(int digit) { return digit != double_false; }
 
     /**
      * @param digit 数值，为 null 时默认返回 false
@@ -178,7 +139,7 @@ public abstract class BooleanUtil
      */
     public static boolean ofDigit(@Nullable Number digit, boolean defaultValue)
     {
-        return digit == null ? defaultValue : digit.doubleValue() != DOUBLE_FALSE;
+        return digit == null ? defaultValue : digit.doubleValue() != double_false;
     }
 
     /**
@@ -227,7 +188,7 @@ public abstract class BooleanUtil
      *     </ul>
      * </p>
      *
-     * <p>类型为不支持的类型时，以不为 null 值表示为 ture（<b>直接返回 true 而传入的默认值</b>）</p>
+     * <p>类型为不支持的类型时，以不为 null 值表示为 ture（<b>直接返回 true 而非传入的默认值</b>）</p>
      *
      * @param arg          参数
      * @param defaultValue 默认值（仅适用参数为 null 的情况）
@@ -239,34 +200,10 @@ public abstract class BooleanUtil
         {
             case null -> defaultValue;
             case Boolean b -> b;
-            case Number n -> n.doubleValue() != DOUBLE_FALSE;
+            case Number n -> n.doubleValue() != double_false;
             default -> true;
         };
     }
-
-    /**
-     * 将布尔值转换为字符串
-     *
-     * @param bool 布尔值
-     * @return "true" / "false"
-     */
-    public static String toString(boolean bool) { return bool ? "true" : "false"; }
-
-    /**
-     * 将布尔值转换为字符串
-     *
-     * @param bool 布尔值
-     * @return "yes" / "no"
-     */
-    public static String toStringYesNo(boolean bool) { return bool ? "yes" : "no"; }
-
-    /**
-     * 将布尔值转换为字符串
-     *
-     * @param bool 布尔值
-     * @return "on" / "off"
-     */
-    public static String toStringOnOff(boolean bool) { return bool ? "on" : "off"; }
 
     // PART ----- OTHER -----
 

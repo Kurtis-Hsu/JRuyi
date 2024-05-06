@@ -14,6 +14,7 @@ import static jruyi.util.Util.safeGet;
  *
  * @Date 2024-01-15 09:34
  */
+@SuppressWarnings("unused")
 public abstract class SystemProperties
 {
     /**
@@ -308,6 +309,8 @@ public abstract class SystemProperties
      */
     public static final String JAVA_CLASS_PATH = "java.class.path";
 
+    public static String javaClassPath() { return get(JAVA_CLASS_PATH); }
+
     /**
      * Java 发行版名称
      */
@@ -327,15 +330,21 @@ public abstract class SystemProperties
      */
     public static final String JAVA_LIB_PATH = "java.library.path";
 
+    public static String javaLibPath() { return get(JAVA_LIB_PATH); }
+
     /**
      * Java 临时 IO 目录（例如：win 系统的 "C:\Users\{user.dir}\AppData\Local\Temp\"）
      */
     public static final String JAVA_TMP_DIR = "java.io.tmpdir";
 
+    public static String javaTmpDir() { return get(JAVA_TMP_DIR); }
+
     /**
      * Java bug 报告网址
      */
     public static final String JAVA_BUG_URL = "java.vendor.url.bug";
+
+    public static String javaBugUrl() { return get(JAVA_BUG_URL); }
 
     /**
      * 程序主模块
@@ -356,15 +365,21 @@ public abstract class SystemProperties
      */
     public static final String FILE_SEPARATOR = "file.separator";
 
+    public static String fileSeparator() { return get(FILE_SEPARATOR); }
+
     /**
      * 当前系统的行分隔符（例如：win 系统的 "\r\n"）
      */
     public static final String LINE_SEPARATOR = "line.separator";
 
+    public static String lineSeparator() { return get(LINE_SEPARATOR); }
+
     /**
      * 当前系统的路径分隔符（例如：win 系统的 ";"）
      */
     public static final String PATH_SEPARATOR = "path.separator";
+
+    public static String pathSeparator() { return get(PATH_SEPARATOR); }
 
     /**
      * {@link System#out} 使用的字符编码
@@ -386,20 +401,4 @@ public abstract class SystemProperties
     public static final String NATIVE_ENCODING = "native.encoding";
 
     public static String nativeEncoding() { return get(NATIVE_ENCODING); }
-
-    public static String javaClassPath() { return get(JAVA_CLASS_PATH); }
-
-    public static String javaLibPath() { return get(JAVA_LIB_PATH); }
-
-    public static String javaTmpDir() { return get(JAVA_TMP_DIR); }
-
-    public static String javaBugUrl() { return get(JAVA_BUG_URL); }
-
-    public static String fileSeparator() { return get(FILE_SEPARATOR); }
-
-    public static String lineSeparator() { return get(LINE_SEPARATOR); }
-
-    public static String pathSeparator() { return get(PATH_SEPARATOR); }
-
-    // TODO
 }

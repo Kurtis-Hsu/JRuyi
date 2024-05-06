@@ -143,30 +143,36 @@ public abstract class Assert
     // PART ----- TEXT ------
 
     /**
-     * @param str 被检测文本
+     * @param csq 被检测文本
      * @throws IllegalArgumentException 文本无效
      * @see StringUtil#notBlank(CharSequence)
      */
-    public static void notBlank(@Nullable String str)
+    public static void notBlank(@Nullable CharSequence csq)
     {
-        asserts(StringUtil.notBlank(str), failedMsg("the text is invalid"));
+        asserts(StringUtil.notBlank(csq), failedMsg("the text is invalid"));
     }
 
     /**
-     * @param str 被检测文本
+     * @param csq 被检测文本
      * @param msg 异常警报信息
      * @throws IllegalArgumentException 文本无效
      * @see StringUtil#notBlank(CharSequence)
      */
-    public static void notBlank(@Nullable String str, @Nullable String msg) { asserts(StringUtil.notBlank(str), msg); }
+    public static void notBlank(@Nullable CharSequence csq, @Nullable String msg)
+    {
+        asserts(StringUtil.notBlank(csq), msg);
+    }
 
     /**
-     * @param str 被检测文本
+     * @param csq 被检测文本
      * @param msg 异常警报信息
      * @throws IllegalArgumentException 文本无效
      * @see StringUtil#notBlank(CharSequence)
      */
-    public static void notBlank(@Nullable String str, MessageSupplier msg) { asserts(StringUtil.notBlank(str), msg); }
+    public static void notBlank(@Nullable CharSequence csq, MessageSupplier msg)
+    {
+        asserts(StringUtil.notBlank(csq), msg);
+    }
 
     // PART ----- STATE ------
 

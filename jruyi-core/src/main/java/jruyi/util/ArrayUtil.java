@@ -13,6 +13,9 @@ import java.util.function.Predicate;
  */
 public abstract class ArrayUtil
 {
+    public static final int[] EMPTY_INT_ARRAY = new int[0];
+    public static final long[] EMPTY_LONG_ARRAY = new long[0];
+
     // PART ----- CHECK -----
 
     /**
