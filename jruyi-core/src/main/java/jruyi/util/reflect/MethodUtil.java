@@ -27,7 +27,7 @@ public abstract class MethodUtil extends MemberUtil
      */
     public static List<Method> getMethodList(Class<?> type)
     {
-        Assert.paramNonnull(type, "type");
+        Assert.paramNotNull(type, "type");
         var methods = new LinkedList<Method>();
         for (var target = type; target != null; target = target.getSuperclass())
             Collections.addAll(methods, type.getDeclaredMethods());
@@ -57,8 +57,8 @@ public abstract class MethodUtil extends MemberUtil
             Class<?> type, MemberConsumer<Method> consumer, @Nullable MemberFilter<Method> filter
     )
     {
-        Assert.paramNonnull(type, "type");
-        Assert.paramNonnull(consumer, "consumer");
+        Assert.paramNotNull(type, "type");
+        Assert.paramNotNull(consumer, "consumer");
         for (var m : type.getDeclaredMethods())
             if (filter == null || filter.apply(m))
                 try { consumer.accept(m); }
@@ -91,8 +91,8 @@ public abstract class MethodUtil extends MemberUtil
             Class<?> type, MemberConsumer<Method> consumer, @Nullable MemberFilter<Method> filter
     )
     {
-        Assert.paramNonnull(type, "type");
-        Assert.paramNonnull(consumer, "consumer");
+        Assert.paramNotNull(type, "type");
+        Assert.paramNotNull(consumer, "consumer");
         for (var target = type; target != null && target != Object.class; target = target.getSuperclass())
             for (var m : target.getDeclaredMethods())
                 if (filter == null || filter.apply(m))

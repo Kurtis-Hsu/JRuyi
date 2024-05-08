@@ -89,7 +89,7 @@ public abstract class ClassUtil
     @Nullable
     public static Class<?> getPrimitive(String name)
     {
-        Assert.paramNonnull(name, "name");
+        Assert.paramNotNull(name, "name");
         if (name.length() >= 8) return null;
         for (var t : PrimitiveType.values())
             if (t.primitiveName().equals(name))

@@ -27,7 +27,7 @@ public abstract class FieldUtil extends MemberUtil
      */
     public static List<Field> getFieldList(Class<?> type)
     {
-        Assert.paramNonnull(type, "type");
+        Assert.paramNotNull(type, "type");
         var fields = new LinkedList<Field>();
         for (var target = type; target != null; target = target.getSuperclass())
             Collections.addAll(fields, type.getDeclaredFields());
@@ -52,8 +52,8 @@ public abstract class FieldUtil extends MemberUtil
      */
     public static void handleField(Class<?> type, MemberConsumer<Field> consumer, @Nullable MemberFilter<Field> filter)
     {
-        Assert.paramNonnull(type, "type");
-        Assert.paramNonnull(consumer, "consumer");
+        Assert.paramNotNull(type, "type");
+        Assert.paramNotNull(consumer, "consumer");
         for (var f : type.getDeclaredFields())
             if (filter == null || filter.apply(f))
                 try { consumer.accept(f); }
@@ -84,8 +84,8 @@ public abstract class FieldUtil extends MemberUtil
      */
     public static void handleFields(Class<?> type, MemberConsumer<Field> consumer, @Nullable MemberFilter<Field> filter)
     {
-        Assert.paramNonnull(type, "type");
-        Assert.paramNonnull(consumer, "consumer");
+        Assert.paramNotNull(type, "type");
+        Assert.paramNotNull(consumer, "consumer");
         for (var target = type; target != null && target != Object.class; target = target.getSuperclass())
             for (var f : target.getDeclaredFields())
                 if (filter == null || filter.apply(f))

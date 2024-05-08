@@ -43,7 +43,7 @@ public enum PrimitiveType
     @Nullable
     static PrimitiveType of(String name)
     {
-        Assert.paramNonnull(name, "primitiveName");
+        Assert.paramNotNull(name, "primitiveName");
         if (!StringUtil.hasText(name)) return null;
         for (var v : values())
             if (v.primitiveName.equals(name) || v.wrapperName.equals(name))
@@ -63,7 +63,7 @@ public enum PrimitiveType
     @Nullable
     static PrimitiveType of(Class<?> type)
     {
-        Assert.paramNonnull(type, "type");
+        Assert.paramNotNull(type, "type");
         for (var v : values())
             if (v.primitive == type || v.wrapper == type)
                 return v;

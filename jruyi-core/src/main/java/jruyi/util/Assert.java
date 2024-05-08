@@ -29,11 +29,11 @@ public abstract class Assert
      * @return 被检测参数
      * @throws NullPointerException 参数为 null
      */
-    public static <O> O paramNonnull(@Nullable O arg, String paramName)
+    public static <O> O paramNotNull(@Nullable O arg, String paramName)
     {
         if (arg == null)
             throw new NullPointerException(
-                    failedMsg(STR."the parameter [\{nonnull(paramName)}] must not be null").get().toString()
+                    failedMsg(STR."the parameter [\{notNull(paramName)}] must not be null").get().toString()
             );
         return arg;
     }
@@ -44,7 +44,7 @@ public abstract class Assert
      * @return 被检测参数
      * @throws NullPointerException 参数为 null
      */
-    public static <O> O nonnull(@Nullable O arg) { return nonnull(arg, failedMsg("the argument must not be null")); }
+    public static <O> O notNull(@Nullable O arg) { return notNull(arg, failedMsg("the argument must not be null")); }
 
     /**
      * @param arg 被检测参数
@@ -53,7 +53,7 @@ public abstract class Assert
      * @return 被检测参数
      * @throws NullPointerException 参数为 null
      */
-    public static <O> O nonnull(@Nullable O arg, @Nullable String msg)
+    public static <O> O notNull(@Nullable O arg, @Nullable String msg)
     {
         if (arg == null) throw new NullPointerException(msg);
         return arg;
@@ -66,7 +66,7 @@ public abstract class Assert
      * @return 被检测参数
      * @throws NullPointerException 参数为 null
      */
-    public static <O> O nonnull(@Nullable O arg, MessageSupplier msg)
+    public static <O> O notNull(@Nullable O arg, MessageSupplier msg)
     {
         if (arg == null) throw new NullPointerException(safeGet(msg.get(), "Assertion failed").toString());
         return arg;
@@ -213,7 +213,7 @@ public abstract class Assert
      */
     public static void isInstance(@Nullable Object obj, Class<?> clazz)
     {
-        nonnull(clazz, failedMsg("the super class to check must not be null"));
+        notNull(clazz, failedMsg("the super class to check must not be null"));
         asserts(
                 clazz.isInstance(obj),
                 () -> failedMsg(STR."the object must not be null and must be instance of class [\{clazz}]").get()
@@ -231,7 +231,7 @@ public abstract class Assert
      */
     public static void isInstance(@Nullable Object obj, Class<?> clazz, @Nullable String msg)
     {
-        nonnull(clazz, failedMsg("the super class to check must not be null"));
+        notNull(clazz, failedMsg("the super class to check must not be null"));
         asserts(clazz.isInstance(obj), msg);
     }
 
@@ -246,7 +246,7 @@ public abstract class Assert
      */
     public static void isInstance(@Nullable Object obj, Class<?> clazz, MessageSupplier msg)
     {
-        paramNonnull(clazz, "clazz");
+        paramNotNull(clazz, "clazz");
         asserts(clazz.isInstance(obj), msg);
     }
 
@@ -260,8 +260,8 @@ public abstract class Assert
      */
     public static void isSuper(Class<?> subClass, Class<?> superClass)
     {
-        paramNonnull(subClass, "subClass");
-        paramNonnull(superClass, "superClass");
+        paramNotNull(subClass, "subClass");
+        paramNotNull(superClass, "superClass");
         asserts(
                 superClass.isAssignableFrom(subClass),
                 () -> failedMsg(STR."class [\{subClass}] must be a subclass of class [\{superClass}]").get()
@@ -279,8 +279,8 @@ public abstract class Assert
      */
     public static void isSuper(Class<?> subClass, Class<?> superClass, @Nullable String msg)
     {
-        paramNonnull(subClass, "subClass");
-        paramNonnull(superClass, "superClass");
+        paramNotNull(subClass, "subClass");
+        paramNotNull(superClass, "superClass");
         asserts(superClass.isAssignableFrom(subClass), msg);
     }
 
@@ -295,8 +295,8 @@ public abstract class Assert
      */
     public static void isSuper(Class<?> subClass, Class<?> superClass, MessageSupplier msg)
     {
-        paramNonnull(subClass, "subClass");
-        paramNonnull(superClass, "superClass");
+        paramNotNull(subClass, "subClass");
+        paramNotNull(superClass, "superClass");
         asserts(superClass.isAssignableFrom(subClass), msg);
     }
 
