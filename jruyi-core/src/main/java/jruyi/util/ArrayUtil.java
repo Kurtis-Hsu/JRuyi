@@ -45,7 +45,6 @@ public abstract class ArrayUtil
      */
     public static <T> boolean check(T[] arr, Predicate<T> checker)
     {
-        Assert.paramNonnull(checker, "checker");
         for (T v : arr)
             if (checker.test(v))
                 return true;
@@ -79,79 +78,4 @@ public abstract class ArrayUtil
         // 如果 getOrigin 为 true，递归调用该方法，否则返回元素类型
         return parseArrayType(component);
     }
-
-    // PART ----- NEW -----
-
-    /**
-     * 将可变参数转换为固定数组
-     *
-     * @param args 可变参数
-     * @param <T>  参数类型
-     * @return 可变参数转换后的数组
-     */
-    @SafeVarargs public static <T> T[] arrayOf(T... args) { return args; }
-
-    /**
-     * 将 byte 可变参数转换为固定数组
-     *
-     * @param args byte 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static byte[] arrayOf(byte... args) { return args; }
-
-    /**
-     * 将 short 可变参数转换为固定数组
-     *
-     * @param args short 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static short[] arrayOf(short... args) { return args; }
-
-    /**
-     * 将 int 可变参数转换为固定数组
-     *
-     * @param args int 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static int[] arrayOf(int... args) { return args; }
-
-    /**
-     * 将 long 可变参数转换为固定数组
-     *
-     * @param args long 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static long[] arrayOf(long... args) { return args; }
-
-    /**
-     * 将 float 可变参数转换为固定数组
-     *
-     * @param args float 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static float[] arrayOf(float... args) { return args; }
-
-    /**
-     * 将 double 可变参数转换为固定数组
-     *
-     * @param args double 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static double[] arrayOf(double... args) { return args; }
-
-    /**
-     * 将 char 可变参数转换为固定数组
-     *
-     * @param args char 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static char[] arrayOf(char... args) { return args; }
-
-    /**
-     * 将 boolean 可变参数转换为固定数组
-     *
-     * @param args boolean 可变参数
-     * @return 可变参数转换后的数组
-     */
-    public static boolean[] arrayOf(boolean... args) { return args; }
 }
